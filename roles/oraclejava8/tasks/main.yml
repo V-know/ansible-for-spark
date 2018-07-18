@@ -1,0 +1,29 @@
+---
+- name: Install JDK.
+  copy: "src={{ item.src }} dest={{ item.dest }}"
+  with_items:
+    - src: "/home/fuge/src/roles/oraclejava8/templates/jdk-8u11-linux-x64.tar.gz"
+      dest: "/tmp/"
+
+    - src: "/home/fuge/src/roles/oraclejava8/templates/java.sh"
+      dest: "/etc/profile.d/"
+  become: yes
+
+- name: Create JAVA directory
+  file: name=/opt/java state=directory
+
+- name: expand JDK.
+  command: >
+    tar -C /opt/java -xvf /tmp/jdk-8u11-linux-x64.tar.gz --strip-components=1
+
+- name: Update alternatives for java.
+  command: >
+    update-alternatives --install /usr/bin/java java /opt/java/bin/java 300
+  become: yes
+
+- name: Update alternatives for javac.
+  command: >
+    update-alternatives --install /usr/bin/javac javac /opt/java/bin/javac 300
+  become: yes
+
+- lineinfile: dest=/home/hadoop/.bashrc regexp="^export JAVA_HOME" line="export JAVA_HOME=/opt/java"

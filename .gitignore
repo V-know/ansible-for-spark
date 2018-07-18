@@ -1,0 +1,6 @@
+.idea
+roles/oraclejava8/templates/jdk-8u11-linux-x64.tar.gz
+roles/common/templates/hadoop-2.7.4.tar.gz
+roles/hbase/templates/hbase-1.2.4-bin.tar.gz
+roles/hive/templates/apache-hive-2.3.0-bin.tar.gz
+roles/spark/templates/spark-2.2.0-bin-hadoop2.7.tgz

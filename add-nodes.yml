@@ -1,0 +1,30 @@
+---
+- hosts: all
+#  handlers:
+#    - name: restart hadoop
+#      shell: /usr/local/hbase/bin/stop-hbase.sh && /usr/local/hbase/bin/start-hbase.sh
+#
+#  handlers:
+#    - name: restart hbase
+#      shell: /usr/local/hbase/bin/stop-hbase.sh && /usr/local/hbase/bin/start-hbase.sh
+
+  tasks:
+    - include_vars: "{{ nodesfile }}"
+
+    - name: Copy regionservers into place
+      template: src=./roles/hbase/templates/regionservers dest=/usr/local/hbase/conf/regionservers owner={{ hadoop_user }} group={{ hadoop_group}}
+
+    - name: Copy slaves into place
+      template: src=./roles/master/templates/slaves dest=/usr/local/hadoop/etc/hadoop/slaves owner={{ hadoop_user }} group={{ hadoop_group}}
+
+- hosts: newdatanode
+  tasks:
+    - name: Start new hdfs node
+      shell: /usr/local/hadoop/sbin/hadoop-daemon.sh start datanode && hdfs dfsadmin -refreshNodes
+
+    - name: Start new yarn node
+      shell: /usr/local/hadoop/sbin/hadoop-daemon.sh start nodemanager && yarn rmadmin -refreshNodes
+
+    - shell: Start new hbase node
+      shell: /usr/local/hbase/bin/hbase-daemon.sh start regionserver
+

@@ -1,0 +1,6 @@
+---
+- hosts: datanode1
+  tasks:
+    - include_vars: "{{ nodesfile }}"
+    - name: Copy regionservers into place
+      template: src=/tmp/regionservers dest=/tmp/regionservers

@@ -1,0 +1,31 @@
+---
+- name: Install hadoop master node
+  hosts: hadoop-master
+  sudo: yes
+
+  roles:
+    - common
+    - oraclejava8
+    - master
+
+- name: Install hadoop data nodes
+  hosts: hadoop-data
+  sudo: yes
+
+  roles:
+    - common
+    - oraclejava8
+
+- name: Install spark
+  hosts: all
+  sudo: yes
+
+  roles:
+   - spark
+
+- name: install hbase
+  hosts: all
+  sudo: yes
+
+  roles:
+  - hbase
