@@ -1,0 +1,13 @@
+[hadoop-master]
+master              ansible_connection=local
+
+[hadoop-data]
+datanode1              ansible_connection=ssh  ansible_user=fuge   ansible_ssh_private_key_file=~/.ssh/id_rsa
+datanode2              ansible_connection=ssh  ansible_user=fuge   ansible_ssh_private_key_file=~/.ssh/id_rsa
+datanode7              ansible_connection=ssh  ansible_user=fuge   ansible_ssh_private_key_file=~/.ssh/id_rsa
+
+[hadoop-master:vars]
+nodesfile=nodes-prod
+
+[hadoop-data:vars]
+nodesfile=nodes-prod

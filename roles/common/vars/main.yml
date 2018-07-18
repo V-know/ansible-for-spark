@@ -1,0 +1,4 @@
+---
+ansible_user: fuge
+hadoop_user: hadoop
+hadoop_group: hadoop

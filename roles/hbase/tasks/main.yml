@@ -1,0 +1,21 @@
+---
+- include_vars: "{{ nodesfile }}"
+
+- name: unpack hbase
+  unarchive: src=/home/{{ ansible_user }}/src/roles/hbase/templates/hbase-1.2.4-bin.tar.gz dest=/usr/local owner={{ hadoop_user}} group={{ hadoop_group }} creates=/usr/local/hbase
+
+- command: mv /usr/local/hbase-1.2.4 /usr/local/hbase creates=/usr/local/hbase removes=/usr/local/hbase-1.2.4
+
+- file: owner={{ hadoop_user}} group={{ hadoop_user}} name=/usr/local/hbase
+
+- lineinfile: dest=/etc/security/limits.conf regexp="spark  -       nofile" line="spark  -       nofile  32768"
+- lineinfile: dest=/etc/security/limits.conf regexp="spark  -       nproc" line="spark  -       nproc  32000"
+- lineinfile: dest=/etc/pam.d/common-session regexp="session required pam_limits.so" line="session required pam_limits.so"
+
+# JAVA_HOME is required by Hbase.
+- lineinfile: dest=/usr/local/hbase/conf/hbase-env.sh regexp="export JAVA_HOME=" line="export JAVA_HOME=/opt/java"
+
+- name: Copy regionservers into place
+  template: src=regionservers dest=/usr/local/hbase/conf/regionservers owner={{ hadoop_user }} group={{ hadoop_group}}
+
+- template: src=hbase-site.xml dest=/usr/local/hbase/conf/ owner={{ hadoop_user }} group={{ hadoop_group}} mode=755

@@ -1,0 +1,12 @@
+---
+- include_vars: "{{ nodesfile }}"
+
+- name: unpack spark
+  unarchive: src=/home/{{ ansible_user }}/src/roles/spark/templates/spark-2.2.0-bin-hadoop2.7.tgz dest=/usr/local owner={{ hadoop_user}} group={{ hadoop_group }} creates=/usr/local/spark
+
+- command: mv /usr/local/spark-2.2.0-bin-hadoop2.7 /usr/local/spark creates=/usr/local/spark removes=/usr/local/spark-2.2.0-bin-hadoop2.7
+
+- name: Copy slaves into place
+  template: src=slaves dest=/usr/local/spark/conf/slaves owner={{ hadoop_user }} group={{ hadoop_group}}
+
+- template: src=spark-env.sh dest=/usr/local/spark/conf/ owner={{ hadoop_user }} group={{ hadoop_group}} mode=755

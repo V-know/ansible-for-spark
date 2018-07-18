@@ -1,0 +1,9 @@
+nodes:
+  - hostname: master
+    ip: 10.0.0.8
+  - hostname: datanode1
+    ip: 10.0.0.9
+  - hostname: datanode2
+    ip: 10.0.0.11
+  - hostname: datanode7
+    ip: 10.0.0.12
