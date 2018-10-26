@@ -21,11 +21,11 @@
   sudo: yes
 
   roles:
-   - spark
+    - spark
 
 - name: install hbase
   hosts: all
   sudo: yes
 
   roles:
-  - hbase
+    - hbase
